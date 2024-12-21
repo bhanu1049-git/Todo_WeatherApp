@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+  /* General Styling */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* To-Do List Styling */
+.todo {
+  margin-bottom: 40px;
+}
+
+.todo h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+.todo-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.todo-input input {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.todo-input button {
+  background: #6a11cb;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.todo-input button:hover {
+  background: #2575fc;
+}
+
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+
+#task-list li {
+  background: rgba(255, 255, 255, 0.2);
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  animation: slideIn 0.5s ease-out;
+}
+
+#task-list li .delete-btn {
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+/* Weather App Styling */
+.weather {
+  margin-bottom: 20px;
+}
+
+.weather h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+.weather-search {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.weather-search input {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.weather-search button {
+  background: #2575fc;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.weather-search button:hover {
+  background: #6a11cb;
+}
+
+.weather-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.weather-info p {
+  font-size: 1.2rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List & Weather App</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header>
+      <h1>Productivity Hub</h1>
+      <p>Your To-Do List & Weather Forecast in One Place</p>
+    </header>
+
+    <!-- To-Do List Section -->
+    <section class="todo">
+      <h2>To-Do List</h2>
+      <div class="todo-input">
+        <input type="text" id="todo-input" placeholder="Add a new task..." />
+        <button id="add-task-btn">Add Task</button>
+      </div>
+      <ul id="task-list"></ul>
+    </section>
+
+    <!-- Weather App Section -->
+    <section class="weather">
+      <h2>Weather App</h2>
+      <div class="weather-search">
+        <input type="text" id="city-input" placeholder="Enter city name..." />
+        <button id="search-weather-btn">Search</button>
+      </div>
+      <div id="weather-info" class="weather-info">
+        <p>Enter a city to get started</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+  // To-Do List Functionality
+document.getElementById("add-task-btn").addEventListener("click", () => {
+  const taskInput = document.getElementById("todo-input");
+  const taskValue = taskInput.value.trim();
+
+  if (taskValue) {
+    const taskList = document.getElementById("task-list");
+    const newTask = document.createElement("li");
+    newTask.innerHTML = `
+      ${taskValue} 
+      <span class="delete-btn">✖</span>
+    `;
+    taskList.appendChild(newTask);
+
+    // Delete task functionality
+    newTask.querySelector(".delete-btn").addEventListener("click", () => {
+      newTask.remove();
+    });
+
+    taskInput.value = ""; // Clear input field
+  }
+});
+
+// Weather App Functionality
+document.getElementById("search-weather-btn").addEventListener("click", async () => {
+  const cityInput = document.getElementById("city-input");
+  const cityName = cityInput.value.trim();
+  const weatherInfo = document.getElementById("weather-info");
+
+  if (cityName) {
+    try {
+      const apiKey = "YOUR_API_KEY"; // Replace with your API key
+      const response = await fetch(https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric);
+      const data = await response.json();
+
+      if (data.cod === 200) {
+        weatherInfo.innerHTML = `
+          <p>City: ${data.name}</p>
+          <p>Temperature: ${data.main.temp}°C</p>
+          <p>Weather: ${data.weather[0].description}</p>
+        `;
+      } else {
+        weatherInfo.innerHTML = <p>City not found. Please try again.</p>;
+      }
+    } catch (error) {
+      weatherInfo.innerHTML = <p>Error fetching weather data.</p>;
+    }
+  }
+});
+  </script>
+</body>
+</html>
